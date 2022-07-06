@@ -7,30 +7,73 @@
 const numbers = document.getElementById('numbers');
 const countDown = document.getElementById('countdown');
 
+// DEFINISCO IL TEMPO DEL COUNTDOWN
 let seconds = 30;
 
-countDown.innerText = seconds;
-
+// CREO L'ARRAY DEI NUMERI RANDOM
 const randomNumbers = [];
 
+// CREO I NUMERI RANDOM
 for(let i = 0; i < 5; i++){
     let randomNumber = Math.floor(Math.random() * 100);
-    randomNumbers.push(randomNumber);
+    if(!randomNumbers.includes(randomNumber)) randomNumbers.push(randomNumber);
 }
 
-numbers.append(randomNumbers);
+// CREO LA VARIABILE D'APPOGGIO PER STAMPARE I NUMERI IN PAGINA
+let number = '';
 
-const userNumbers = []
- 
-setTimeout(function() {
-    numbers.remove(randomNumbers);
-    for(let i = 0; i < 5; i++){
-        let answer = prompt('Scrivi un numero');
-        userNumbers.push(answer);
-    }
-}, 3000)
+// CREO LA STRINGA DA STAMPARE IN PAGINA
+for(let i = 0; i < 5; i++){
+    number += `<p>${randomNumbers[i]}</p>`
+}
 
+// STAMPO LA STRINGA IN PAGINA
+numbers.innerHTML = number;
+
+// CREO IL COUNTDOWN
 setInterval(function() {
     seconds--;
     countDown.innerText = seconds;
 }, 1000)
+
+// STAMPO IL COUNTDOWN IN PAGINA
+countDown.innerText = seconds;
+ 
+// RIMUOVO I NUMERI ED IL COUNTDOWN DAL DOM
+setTimeout(function() {
+    numbers.remove(randomNumbers);
+    countDown.remove(seconds);
+}, 30000)
+
+// CREO L'ARRAY DI NUMERI DELL'UTENTE
+const userNumbers = []
+
+// CIO CHE FACCIO UNA VOLTA RIMOSSI NUMERI E COUNTDOWN DAL DOM
+setTimeout(function() {
+    // CHIEDO I NUMERI ALL'UTENTE
+    for(let i = 0; i < 5; i++){
+        let answer = parseInt(prompt('Scrivi un numero da 1 a 100'));
+        userNumbers.push(answer);
+        console.log(answer);
+    }
+
+    // CREO LE VARIABILI D'APPOGGIO PER IL PUNTEGGIO E PER I NUMERI INDOVINATI
+    let score = 0;
+    let correctNumber = '';
+
+    // STABILISCO IL PUNTEGGIO ED I NUMERI INDOVINATI
+    for(let i = 0; i < 5; i++){
+        if(randomNumbers.includes(userNumbers[i])){
+            score += 1;
+            correctNumber += userNumbers[i] + ' ';
+        }
+    }
+
+    // STAMPO IN CONSOLE IL PUNTEGGIO ED I NUMERI INDOVINATI
+    console.log('Il tuo punteggio è: ' + score);
+    console.log('Questi sono i numeri che hai indovinato: ' + correctNumber)
+
+}, 30200)
+
+console.log(randomNumbers);
+console.log(userNumbers);
